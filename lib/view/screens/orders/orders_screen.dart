@@ -18,9 +18,9 @@ class OrdersScreen extends StatelessWidget {
           Expanded(
             child: Obx(
               () => ListView.builder(
-                itemCount: orderController.orders.length,
+                itemCount: orderController.pendingOrders.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return OrderCard(order: orderController.orders[index]);
+                  return OrderCard(order: orderController.pendingOrders[index]);
                 },
               ),
             ),

@@ -2,14 +2,17 @@
 
 import 'package:ecommerce_app_backend/view/shared/config/config.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../controllers/controllers.dart';
 import '../../../models/models.dart';
 
 class OrderCard extends StatelessWidget {
-  final Order order;
+  OrderCard({required this.order, super.key});
 
-  const OrderCard({required this.order, super.key});
+  final Order order;
+  final OrderController orderController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -102,24 +105,55 @@ class OrderCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.accept,
-                      minimumSize: const Size(AppSize.s150, AppSize.s40),
-                    ),
-                    onPressed: () {},
-                    child: Text('Accept',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6!
-                            .copyWith(color: AppColors.secondary)),
-                  ),
+                  order.isAccepted
+                      ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.accept,
+                            minimumSize: const Size(AppSize.s150, AppSize.s40),
+                          ),
+                          onPressed: () {
+                            orderController.updateOrder(
+                              order,
+                              'isDelivered',
+                              !order.isDelivered,
+                            );
+                          },
+                          child: Text('Deliver',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(color: AppColors.secondary)),
+                        )
+                      : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.accept,
+                            minimumSize: const Size(AppSize.s150, AppSize.s40),
+                          ),
+                          onPressed: () {
+                            orderController.updateOrder(
+                              order,
+                              'isAccepted',
+                              !order.isAccepted,
+                            );
+                          },
+                          child: Text('Accept',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(color: AppColors.secondary)),
+                        ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.cancel,
                       minimumSize: const Size(AppSize.s150, AppSize.s40),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      orderController.updateOrder(
+                        order,
+                        'isCancelled',
+                        !order.isCancelled,
+                      );
+                    },
                     child: Text('Cancel',
                         style: Theme.of(context)
                             .textTheme
